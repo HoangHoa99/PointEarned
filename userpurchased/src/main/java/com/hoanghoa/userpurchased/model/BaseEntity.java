@@ -19,7 +19,7 @@ public abstract class BaseEntity {
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", updatable = false)
+    @Column(name = "updated_at")
     private Date updatedAt;
 
     @Column(name = "deleted_at")

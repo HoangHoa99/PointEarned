@@ -34,4 +34,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             " JOIN users u ON u.id = pc.user_id" +
             " WHERE pc.store_id = ?1")
     List<Object[]> userHistoryList(Integer userId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM users WHERE qr_url IS NULL")
+    List<User> findAllMissingQR();
 }

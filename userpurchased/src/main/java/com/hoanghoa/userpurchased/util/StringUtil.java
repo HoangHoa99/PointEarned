@@ -12,10 +12,8 @@ public class StringUtil {
     public static final String USER_PREFIX = "user_";
     public static final String COMMA = ",";
     public static final String UNDERSCORE = "_";
-    public static final String COLONS = ":";
-    public static final String STORE_ID = "store_id";
-    public static final String USER_ID = "user_id";
     public static final String EMPTY = "";
+    public static final String NULL = null;
 
     /**
      * Generate trace id, for logging purpose
