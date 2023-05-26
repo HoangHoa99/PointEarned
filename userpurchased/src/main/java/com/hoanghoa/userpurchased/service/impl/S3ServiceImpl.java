@@ -50,7 +50,7 @@ public class S3ServiceImpl implements IS3Service {
      */
     @Override
     public String uploadFile(File file) {
-        String fileUrl = "";
+        String fileUrl;
         try {
             String fileName = file.getName();
             fileUrl = endpointUrl + "/" + fileName;
@@ -61,6 +61,7 @@ public class S3ServiceImpl implements IS3Service {
             boolean deletedFile = file.delete();
         } catch (Exception e) {
             e.printStackTrace();
+            fileUrl = null;
         }
         return fileUrl;
     }
@@ -85,6 +86,6 @@ public class S3ServiceImpl implements IS3Service {
             e.printStackTrace();
         }
 
-        return StringUtil.EMPTY;
+        return StringUtil.NULL;
     }
 }
