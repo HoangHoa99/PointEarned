@@ -101,7 +101,9 @@ public class UserServiceImpl implements IUserService {
 
         UserLoginResponse response = new UserLoginResponse();
         response.setId(user.getId());
+        response.setUsername(user.getUsername());
         response.setUserType(user.getUserType());
+        response.setQrUrl(user.getQrUrl());
         response.setUserPurchasedList(userPurchasedList);
 
         return response;

@@ -56,7 +56,7 @@ public class StringUtil {
             return null;
         }
 
-        return Float.valueOf(value);
+        return Float.parseFloat(value)/100;
     }
 
     public static String valueOf(Object obj) {

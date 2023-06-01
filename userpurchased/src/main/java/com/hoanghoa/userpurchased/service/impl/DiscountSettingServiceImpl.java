@@ -7,7 +7,9 @@ import com.hoanghoa.userpurchased.constant.UserType;
 import com.hoanghoa.userpurchased.model.dao.DiscountSettingId;
 import com.hoanghoa.userpurchased.model.dao.DiscountSetting;
 import com.hoanghoa.userpurchased.model.dto.request.DiscountSettingRequest;
+import com.hoanghoa.userpurchased.model.dto.request.GetDiscountRequest;
 import com.hoanghoa.userpurchased.model.dto.response.BaseResponse;
+import com.hoanghoa.userpurchased.model.dto.response.GetDiscountResponse;
 import com.hoanghoa.userpurchased.repository.DiscountSettingRepository;
 import com.hoanghoa.userpurchased.repository.UserRepository;
 import com.hoanghoa.userpurchased.service.IDiscountSettingService;
@@ -72,6 +74,62 @@ public class DiscountSettingServiceImpl implements IDiscountSettingService {
         }
 
         return response;
+    }
+
+    /**
+     * Get setting value base on store id
+     * @param request GetDiscountRequest
+     * @return GetDiscountResponse
+     */
+    @Override
+    public GetDiscountResponse getDiscountRule(GetDiscountRequest request) {
+
+        GetDiscountResponse response = new GetDiscountResponse();
+        try {
+            // validate
+            boolean storeExisted = userRepository.existedUserByIdAndType(request.getStoreId(), UserType.STORE.name());
+            if(!storeExisted) {
+                String message = messageSource.getMessage(MessageCode.STORE_NOT_EXISTED, new Object[0],
+                        Locale.ENGLISH);
+
+                return new GetDiscountResponse(message, true);
+            }
+
+            List<DiscountSetting> discountSettings = discountSettingRepository
+                    .getAllByIds(Collections.singletonList(request.getStoreId()));
+
+            Map<UserRank, Map<SettingKey, String>> settingsMap = this.convertToMap(discountSettings);
+            response.setDiscountSettings(settingsMap);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+
+            String message = messageSource.getMessage(MessageCode.STORE_SETTING_EMPTY, new Object[0],
+                    Locale.ENGLISH);
+
+            response = new GetDiscountResponse(message, true);
+        }
+        return response;
+    }
+
+    private Map<UserRank, Map<SettingKey, String>> convertToMap(List<DiscountSetting> discountSettings) {
+
+        if(discountSettings.isEmpty()) {
+            return null;
+        }
+        Map<UserRank, Map<SettingKey, String>> discountSettingsMap = new HashMap<>();
+
+        for(DiscountSetting ds : discountSettings) {
+            Map<SettingKey, String> rankMetric = new HashMap<>();
+            rankMetric.put(SettingKey.LEAST_NUMBER, StringUtil.valueOf(ds.getLeastNumber()));
+            rankMetric.put(SettingKey.DISCOUNT_LIMIT, StringUtil.valueOf(ds.getDiscountLimit()));
+            Integer discountValue = Math.round(ds.getDiscountValue() * 100);
+            rankMetric.put(SettingKey.DISCOUNT_VALUE, StringUtil.valueOf(discountValue));
+
+            discountSettingsMap.put(ds.getDiscountSettingId().getUserRank(), rankMetric);
+        }
+
+        return discountSettingsMap;
     }
 
     /**
