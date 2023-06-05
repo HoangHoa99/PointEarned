@@ -7,10 +7,6 @@ public class UserLoginRequest {
     @NotEmpty(message = "Phone number is required")
     private String phoneNumber;
 
-    public UserLoginRequest(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }

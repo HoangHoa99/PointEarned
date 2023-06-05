@@ -12,8 +12,8 @@ import java.nio.file.Path;
 
 public class QRUtil {
 
-    private static final Integer QR_HEIGHT = 300;
-    private static final Integer QR_WIDTH  = 300;
+    private static final Integer QR_HEIGHT = 500;
+    private static final Integer QR_WIDTH  = 500;
 
     /**
      * Generate QC code for user info

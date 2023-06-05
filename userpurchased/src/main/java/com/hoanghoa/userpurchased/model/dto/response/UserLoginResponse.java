@@ -10,7 +10,9 @@ import java.util.List;
 public class UserLoginResponse extends AbstractBaseResponse implements Serializable {
 
     private Integer id;
+    private String username;
     private UserType userType;
+    private String qrUrl;
     private List<UserPurchased> userPurchasedList;
 
     public UserLoginResponse(String message) {
@@ -33,12 +35,28 @@ public class UserLoginResponse extends AbstractBaseResponse implements Serializa
         this.id = id;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public UserType getUserType() {
         return userType;
     }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public String getQrUrl() {
+        return qrUrl;
+    }
+
+    public void setQrUrl(String qrUrl) {
+        this.qrUrl = qrUrl;
     }
 
     public List<UserPurchased> getUserPurchasedList() {

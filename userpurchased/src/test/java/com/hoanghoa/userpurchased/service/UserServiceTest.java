@@ -91,7 +91,8 @@ public class UserServiceTest {
         // init variable
         String phoneNumber = "0987123654";
         Optional<User> emptyUser = Optional.empty();
-        UserLoginRequest request = new UserLoginRequest(phoneNumber);
+        UserLoginRequest request = new UserLoginRequest();
+        request.setPhoneNumber(phoneNumber);
 
         // get actual response
         when(userRepository.findByPhone(phoneNumber)).thenReturn(emptyUser);
@@ -116,7 +117,8 @@ public class UserServiceTest {
         fakeUser.setPhoneNumber(phoneNumber);
         fakeUser.setUserType(UserType.USER);
         Optional<User> optionalUser = Optional.of(fakeUser);
-        UserLoginRequest request = new UserLoginRequest(phoneNumber);
+        UserLoginRequest request = new UserLoginRequest();
+        request.setPhoneNumber(phoneNumber);
         List<Object[]> fakeResponseList = new ArrayList<>();
         fakeResponseList.add(new Object[]{"0", "1", "2", "3"});
 
