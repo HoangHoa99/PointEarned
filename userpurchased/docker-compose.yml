@@ -1,15 +1,46 @@
 version: '3.8'
 services:
-  server:
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    ports:
+      - "2181:2181"
+#    volumes:
+#      - "zookeeper_data:/bitnami"
     environment:
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.4
+    ports:
+      - "9092:9092"
+#    volumes:
+#      - "kafka_data:/bitnami"
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_ENABLE_KRAFT=no
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+    depends_on:
+      - zookeeper
+
+  server:
     container_name: userpurchased
     image: userpurchased
+    environment:
+      spring.kafka.consumer.bootstrap-servers: kafka:9092
+      spring.kafka.consumer.group-id: group_id
+      spring.kafka.consumer.auto-offset-reset: earliest
+      spring.kafka.consumer.key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      spring.kafka.consumer.value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      spring.kafka.producer.bootstrap-servers: kafka:9092
+      spring.kafka.producer.key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      spring.kafka.producer.value-serializer: org.apache.kafka.common.serialization.StringSerializer
     build: ./
     ports:
       - "8080:8080"
     depends_on:
+      - zookeeper
+      - kafka
       - postgresqldb
   postgresqldb:
     container_name: postgres-db
