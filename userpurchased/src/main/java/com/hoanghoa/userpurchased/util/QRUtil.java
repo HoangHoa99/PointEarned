@@ -41,7 +41,9 @@ public class QRUtil {
     public static File createFilePath(String fileName) {
         String home = System.getProperty("user.home");
 
-        return new File(home + File.separator + "Documents" + File.separator + "files"
-                + File.separator + fileName + ".png");
+//        return new File(home + File.separator + "Documents" + File.separator + "files"
+//                + File.separator + fileName + ".png");
+
+        return new File(home + File.separator + fileName + ".png");
     }
 }

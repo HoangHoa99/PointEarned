@@ -3,6 +3,7 @@ package com.hoanghoa.userpurchased.service.impl;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -39,6 +40,7 @@ public class S3ServiceImpl implements IS3Service {
         AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
         this.s3Client = AmazonS3ClientBuilder
                 .standard()
+                .withRegion(Regions.AP_SOUTHEAST_1)
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
     }
