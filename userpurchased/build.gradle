@@ -29,6 +29,11 @@ dependencies {
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 }
 
+jar {
+	group    = "com.hoanghoa"
+	manifest { attributes "Main-Class": "com.hoanghoa.userpurchased.UserPurchasedApplication" }
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
