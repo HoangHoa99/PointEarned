@@ -14,6 +14,8 @@ public class StringUtil {
     public static final String UNDERSCORE = "_";
     public static final String EMPTY = "";
     public static final String NULL = null;
+    public static final String TOPIC_NAME = "pointearned";
+    public static final String GROUP_ID = "group_id";
 
     /**
      * Generate trace id, for logging purpose
