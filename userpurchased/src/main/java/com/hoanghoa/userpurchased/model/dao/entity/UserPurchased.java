@@ -1,6 +1,7 @@
 package com.hoanghoa.userpurchased.model.dao.entity;
 
 import com.hoanghoa.userpurchased.constant.UserRank;
+import com.hoanghoa.userpurchased.util.IntegerUtil;
 import com.hoanghoa.userpurchased.util.StringUtil;
 
 public class UserPurchased {
@@ -16,7 +17,7 @@ public class UserPurchased {
         userPurchased.setName(StringUtil.valueOf(obj[0]));
         userPurchased.setPurchasedCount(Integer.valueOf(StringUtil.valueOf(obj[1])));
         userPurchased.setUserRank(UserRank.getValue(StringUtil.valueOf(obj[2])));
-        userPurchased.setDiscountRemain(Integer.valueOf(StringUtil.valueOf(obj[3])));
+        userPurchased.setDiscountRemain(IntegerUtil.valueOf(StringUtil.valueOf(obj[3])));
 
         return userPurchased;
     }
