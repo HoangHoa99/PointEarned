@@ -5,12 +5,17 @@ import com.hoanghoa.userpurchased.constant.UserType;
 import com.hoanghoa.userpurchased.model.dao.entity.UserPurchased;
 import com.hoanghoa.userpurchased.model.dao.User;
 import com.hoanghoa.userpurchased.model.dto.request.UserLoginRequest;
+import com.hoanghoa.userpurchased.model.dto.request.UserPurchasedRequest;
 import com.hoanghoa.userpurchased.model.dto.request.UserRegisterRequest;
 import com.hoanghoa.userpurchased.model.dto.response.UserLoginResponse;
+import com.hoanghoa.userpurchased.model.dto.response.UserPurchasedResponse;
 import com.hoanghoa.userpurchased.model.dto.response.UserRegisterResponse;
 import com.hoanghoa.userpurchased.repository.UserRepository;
 import com.hoanghoa.userpurchased.service.IS3Service;
 import com.hoanghoa.userpurchased.service.IUserService;
+import com.hoanghoa.userpurchased.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,8 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements IUserService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -97,14 +104,45 @@ public class UserServiceImpl implements IUserService {
 
         User user = clientOptional.get();
 
-        List<UserPurchased> userPurchasedList = this.userPurchasedList(user.getUserType(), user.getId());
-
         UserLoginResponse response = new UserLoginResponse();
         response.setId(user.getId());
         response.setUsername(user.getUsername());
         response.setUserType(user.getUserType());
         response.setQrUrl(user.getQrUrl());
-        response.setUserPurchasedList(userPurchasedList);
+
+        return response;
+    }
+
+    @Override
+    public UserPurchasedResponse userPurchasedHistory(UserPurchasedRequest request) {
+        UserPurchasedResponse response;
+        try {
+            Optional<User> clientOptional = userRepository.findById(request.getId());
+            if(clientOptional.isEmpty()) {
+                String message = messageSource.getMessage(MessageCode.USER_NOT_EXISTED, new Object[0], Locale.ENGLISH);
+
+                return new UserPurchasedResponse(message, true);
+            }
+
+            User foundUser = clientOptional.get();
+
+            List<UserPurchased> userPurchasedList = this.userPurchasedList(foundUser.getUserType(), foundUser.getId());
+
+            String message = messageSource.getMessage(MessageCode.SUCCESS, new Object[0], Locale.ENGLISH);
+
+            response = new UserPurchasedResponse();
+            response.setUserPurchasedList(userPurchasedList);
+            response.setMessage(message);
+        }
+        catch (Exception e) {
+            LOGGER.error("{} error occur while fetching user purchased. Message: {}",
+                    StringUtil.generateTraceId(String.valueOf(request.getId()), "userPurchasedHistory"),
+                    e.getMessage());
+
+            String message = messageSource.getMessage(MessageCode.FAILURE, new Object[0], Locale.ENGLISH);
+
+            response = new UserPurchasedResponse(message, true);
+        }
 
         return response;
     }

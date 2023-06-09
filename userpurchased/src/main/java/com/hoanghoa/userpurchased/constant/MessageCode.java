@@ -3,6 +3,7 @@ package com.hoanghoa.userpurchased.constant;
 public class MessageCode {
 
     public static final String SUCCESS = "SM001";
+    public static final String FAILURE = "SM002";
     public static final String USER_EXISTED = "UR001";
     public static final String USER_REGISTER_FAILURE = "UR002";
     public static final String USER_REGISTER_SUCCESSFUL = "UR003";

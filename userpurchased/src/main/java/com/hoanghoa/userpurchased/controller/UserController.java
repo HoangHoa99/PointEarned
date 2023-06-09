@@ -1,8 +1,10 @@
 package com.hoanghoa.userpurchased.controller;
 
 import com.hoanghoa.userpurchased.model.dto.request.UserLoginRequest;
+import com.hoanghoa.userpurchased.model.dto.request.UserPurchasedRequest;
 import com.hoanghoa.userpurchased.model.dto.request.UserRegisterRequest;
 import com.hoanghoa.userpurchased.model.dto.response.UserLoginResponse;
+import com.hoanghoa.userpurchased.model.dto.response.UserPurchasedResponse;
 import com.hoanghoa.userpurchased.model.dto.response.UserRegisterResponse;
 import com.hoanghoa.userpurchased.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +29,10 @@ public class UserController {
     @PostMapping("/login")
     public UserLoginResponse loginByPhone(@Valid @RequestBody UserLoginRequest request) {
         return userService.userLoginInfo(request);
+    }
+
+    @PostMapping("/purchased")
+    public UserPurchasedResponse userPurchasedHistory(@Valid @RequestBody UserPurchasedRequest request) {
+        return userService.userPurchasedHistory(request);
     }
 }

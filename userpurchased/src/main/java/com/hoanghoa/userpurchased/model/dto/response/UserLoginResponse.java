@@ -13,7 +13,6 @@ public class UserLoginResponse extends AbstractBaseResponse implements Serializa
     private String username;
     private UserType userType;
     private String qrUrl;
-    private List<UserPurchased> userPurchasedList;
 
     public UserLoginResponse(String message) {
         super(message, false);
@@ -57,13 +56,5 @@ public class UserLoginResponse extends AbstractBaseResponse implements Serializa
 
     public void setQrUrl(String qrUrl) {
         this.qrUrl = qrUrl;
-    }
-
-    public List<UserPurchased> getUserPurchasedList() {
-        return userPurchasedList;
-    }
-
-    public void setUserPurchasedList(List<UserPurchased> userPurchasedList) {
-        this.userPurchasedList = userPurchasedList;
     }
 }

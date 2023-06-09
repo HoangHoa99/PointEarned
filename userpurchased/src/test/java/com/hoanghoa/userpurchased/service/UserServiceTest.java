@@ -119,15 +119,12 @@ public class UserServiceTest {
         Optional<User> optionalUser = Optional.of(fakeUser);
         UserLoginRequest request = new UserLoginRequest();
         request.setPhoneNumber(phoneNumber);
-        List<Object[]> fakeResponseList = new ArrayList<>();
-        fakeResponseList.add(new Object[]{"0", "1", "2", "3"});
 
         // get actual response
         when(userRepository.findByPhone(phoneNumber)).thenReturn(optionalUser);
-        when(userRepository.userPurchasedList(fakeUser.getId())).thenReturn(fakeResponseList);
         UserLoginResponse actualResponse = userService.userLoginInfo(request);
 
         // compare value
-        Assertions.assertFalse(actualResponse.getUserPurchasedList().isEmpty());
+        Assertions.assertFalse(actualResponse.getError());
     }
 }
